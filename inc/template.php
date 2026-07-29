@@ -119,6 +119,54 @@ function renderTemplate(array $context): void
         <span class="status-chip"><span></span><?= t('common.status_development') ?></span>
     </div>
 </footer>
+
+<div
+    class="image-modal"
+    data-image-modal
+    aria-hidden="true"
+>
+    <div
+        class="image-modal__overlay"
+        data-image-modal-close
+    ></div>
+
+    <div
+        class="image-modal__dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="image-modal-title"
+    >
+        <div class="image-modal__header">
+            <div
+                class="image-modal__title"
+                id="image-modal-title"
+                data-image-modal-title
+            ></div>
+
+            <button
+                class="image-modal__close"
+                type="button"
+                aria-label="<?= t('common.close') ?>"
+                data-image-modal-close
+            >
+                <span class="material-symbols-outlined">
+                    X
+                </span>
+            </button>
+        </div>
+
+        <div class="image-modal__content">
+            <img
+                class="image-modal__image"
+                data-image-modal-image
+                src=""
+                alt=""
+            >
+        </div>
+    </div>
+</div>
+
+
 </body>
 </html>
     <?php

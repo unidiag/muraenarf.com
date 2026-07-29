@@ -23,7 +23,14 @@ return [
                         >
                             <?= t('main.video_title') ?>
                         </button>
-                        <a class="button button--outlined" href="/contact"><?= t('main.hero_secondary') ?></a>
+                        <a
+                            class="button button--outlined"
+                            href="https://demo.muraenarf.com"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            <?= t('main.hero_secondary') ?>
+                        </a>
                     </div>
                 </div>
                 <div class="hero-visual reveal" aria-hidden="true">

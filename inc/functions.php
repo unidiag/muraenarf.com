@@ -235,7 +235,8 @@ function t(string $key, ?string $fallback = null): string
     global $translations;
 
     $value = $translations[$key] ?? $fallback ?? $key;
-    return htmlspecialchars((string) $value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+
+    return renderTranslatedText((string) $value);
 }
 
 function e(string $value): string
@@ -334,4 +335,89 @@ function renderInfoSection(string $icon, string $title, string $text): void
         </div>
     </section>
     <?php
+}
+
+
+function renderTranslatedText(string $text): string
+{
+    $parts = preg_split(
+        '~(\[img=[^\]]+\].*?\[/img\])~isu',
+        $text,
+        -1,
+        PREG_SPLIT_DELIM_CAPTURE
+    );
+
+    if ($parts === false) {
+        return htmlspecialchars(
+            $text,
+            ENT_QUOTES | ENT_SUBSTITUTE,
+            'UTF-8'
+        );
+    }
+
+    $result = '';
+
+    foreach ($parts as $part) {
+        if ($part === '') {
+            continue;
+        }
+
+        if (
+            preg_match(
+                '~^\[img=([^\]]+)\](.*?)\[/img\]$~isu',
+                $part,
+                $matches
+            )
+        ) {
+            $filename = basename(trim($matches[1]));
+            $caption = trim($matches[2]);
+
+            if (
+                $filename === ''
+                || !preg_match(
+                    '~^[a-zA-Z0-9._-]+\.(?:png|jpe?g|gif|webp|svg)$~i',
+                    $filename
+                )
+            ) {
+                $result .= htmlspecialchars(
+                    $caption,
+                    ENT_QUOTES | ENT_SUBSTITUTE,
+                    'UTF-8'
+                );
+
+                continue;
+            }
+
+            $imageUrl = '/assets/images/' . rawurlencode($filename);
+
+            $result .= sprintf(
+                '<button class="inline-image-link" type="button" data-image-modal-open data-image-src="%s" data-image-alt="%s">%s</button>',
+                htmlspecialchars(
+                    $imageUrl,
+                    ENT_QUOTES | ENT_SUBSTITUTE,
+                    'UTF-8'
+                ),
+                htmlspecialchars(
+                    $caption,
+                    ENT_QUOTES | ENT_SUBSTITUTE,
+                    'UTF-8'
+                ),
+                htmlspecialchars(
+                    $caption,
+                    ENT_QUOTES | ENT_SUBSTITUTE,
+                    'UTF-8'
+                )
+            );
+
+            continue;
+        }
+
+        $result .= htmlspecialchars(
+            $part,
+            ENT_QUOTES | ENT_SUBSTITUTE,
+            'UTF-8'
+        );
+    }
+
+    return $result;
 }

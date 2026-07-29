@@ -87,8 +87,8 @@ return [
     ],
 
     'main.hero_secondary' => [
-        'Связаться с автором',
-        'Contact the author',
+        'Дeмо',
+        'Demo',
     ],
 
     'main.about_title' => [
@@ -144,8 +144,8 @@ return [
     ],
 
     'main.feature_1' => [
-        'Передача управления по существующему коаксиальному тракту',
-        'Control data transmitted through the existing coaxial network',
+        'Передача управления по существующему коаксиальному тракту на частоте 320 MHz. Канал СК-22 должен быть свободен в вашей сети. [img=tx-spectrum.jpg]Модуляция GFSK с девиацией не более 30 кГц[/img]. Скорость передачи около 57.6 кбод.',
+        'Control signal transmission via the existing coaxial path at a frequency of 320 MHz. The SK-22 channel must be available in your network. [img=tx-spectrum.jpg]GFSK modulation with a deviation of no more than 30 kHz[/img]. Transmission rate: approximately 57.6 kbaud.',
     ],
 
     'main.feature_2' => [

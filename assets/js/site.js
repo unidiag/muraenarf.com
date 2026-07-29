@@ -100,3 +100,89 @@ if (videoModal && videoModalOpenButton) {
         }
     });
 }
+
+
+
+
+
+const imageModal = document.querySelector("[data-image-modal]");
+
+if (imageModal) {
+    const modalImage = imageModal.querySelector(
+        "[data-image-modal-image]"
+    );
+
+    const modalTitle = imageModal.querySelector(
+        "[data-image-modal-title]"
+    );
+
+    const closeButtons = imageModal.querySelectorAll(
+        "[data-image-modal-close]"
+    );
+
+    let previouslyFocusedElement = null;
+
+    const openImageModal = (button) => {
+        const imageSrc = button.dataset.imageSrc;
+        const imageAlt = button.dataset.imageAlt || "";
+
+        if (!imageSrc || !modalImage) {
+            return;
+        }
+
+        previouslyFocusedElement = document.activeElement;
+
+        modalImage.src = imageSrc;
+        modalImage.alt = imageAlt;
+
+        if (modalTitle) {
+            modalTitle.textContent = imageAlt;
+        }
+
+        imageModal.classList.add("is-open");
+        imageModal.setAttribute("aria-hidden", "false");
+        document.body.classList.add("image-modal-open");
+
+        imageModal.querySelector(".image-modal__close")?.focus();
+    };
+
+    const closeImageModal = () => {
+        imageModal.classList.remove("is-open");
+        imageModal.setAttribute("aria-hidden", "true");
+        document.body.classList.remove("image-modal-open");
+
+        if (modalImage) {
+            modalImage.src = "";
+            modalImage.alt = "";
+        }
+
+        if (modalTitle) {
+            modalTitle.textContent = "";
+        }
+
+        previouslyFocusedElement?.focus();
+    };
+
+    document.addEventListener("click", (event) => {
+        const button = event.target.closest(
+            "[data-image-modal-open]"
+        );
+
+        if (button) {
+            openImageModal(button);
+        }
+    });
+
+    closeButtons.forEach((button) => {
+        button.addEventListener("click", closeImageModal);
+    });
+
+    document.addEventListener("keydown", (event) => {
+        if (
+            event.key === "Escape"
+            && imageModal.classList.contains("is-open")
+        ) {
+            closeImageModal();
+        }
+    });
+}
