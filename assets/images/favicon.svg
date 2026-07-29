@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
+  <title id="title">MuraenaRF</title>
+  <desc id="desc">RF splitter with eight ports and a central input arrow</desc>
+
+  <g fill="none" stroke="#65e0d1" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Main body -->
+    <rect x="18" y="43" width="92" height="42" rx="5"/>
+
+    <!-- Top ports -->
+    <path d="M24 43V31h9v12"/>
+    <path d="M39 43V31h9v12"/>
+    <path d="M80 43V31h9v12"/>
+    <path d="M95 43V31h9v12"/>
+
+    <!-- Bottom ports -->
+    <path d="M24 85v12h9V85"/>
+    <path d="M39 85v12h9V85"/>
+    <path d="M80 85v12h9V85"/>
+    <path d="M95 85v12h9V85"/>
+  </g>
+
+  <!-- Input arrow -->
+  <path d="M64 27v13" fill="none" stroke="#65e0d1" stroke-width="6" stroke-linecap="round"/>
+  <path d="M55 39h18L64 52z" fill="#65e0d1" stroke="#65e0d1" stroke-width="3" stroke-linejoin="round"/>
+</svg>

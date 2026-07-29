@@ -1,0 +1,15 @@
+Options -Indexes
+DirectoryIndex index.php
+
+RewriteEngine On
+
+# Allow existing files and directories (assets, favicon, robots.txt, etc.).
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Human-readable routes: /tx, /rx, /base, /contact.
+RewriteRule ^([a-zA-Z0-9-]+)/?$ index.php?page=$1 [QSA,L]
+
+# Everything else is handled by the front controller and returns 404.
+RewriteRule ^ index.php [QSA,L]
