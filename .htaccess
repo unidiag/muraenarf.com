@@ -3,6 +3,9 @@ DirectoryIndex index.php
 
 RewriteEngine On
 
+# Deny direct HTTP access to internal PHP sources.
+RewriteRule ^(?:inc|pages)(?:/|$) - [F,L,NC]
+
 # Allow existing files and directories (assets, favicon, robots.txt, etc.).
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d

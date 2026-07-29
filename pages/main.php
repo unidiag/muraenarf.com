@@ -50,12 +50,16 @@ return [
             <div class="container">
                 <div class="section-heading reveal">
                     <span class="section-heading__line"></span>
-                    <h2><?= t('main.architecture_title') ?></h2>
+                    <h2><?= t('main.architecture_alt') ?></h2>
                 </div>
-                <div class="card-grid card-grid--three">
-                    <?php renderFeature('dashboard', 'main.base_title', 'main.base_text'); ?>                    
-                    <?php renderFeature('cell_tower', 'main.tx_title', 'main.tx_text'); ?>
-                    <?php renderFeature('account_tree', 'main.rx_title', 'main.rx_text'); ?>
+
+                <div class="architecture-diagram reveal">
+                    <img
+                        src="/assets/images/muraenarf-architecture.svg"
+                        alt="<?= t('main.architecture_alt') ?>"
+                        loading="lazy"
+                        decoding="async"
+                    >
                 </div>
             </div>
         </section>

@@ -1,1 +1,10 @@
-deny from all
+# Deny direct HTTP access to all files in this directory.
+<IfModule mod_authz_core.c>
+    Require all denied
+</IfModule>
+
+# Apache 2.2 fallback.
+<IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+</IfModule>

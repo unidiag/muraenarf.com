@@ -5,8 +5,10 @@ declare(strict_types=1);
 const PROJECT_ROOT = __DIR__;
 const PAGES_DIR = PROJECT_ROOT . '/pages';
 
+require PROJECT_ROOT . '/vendor/autoload.php';
 require PROJECT_ROOT . '/inc/functions.php';
 require PROJECT_ROOT . '/inc/template.php';
+
 
 $language = detectLanguage();
 $translations = loadTranslations($language);

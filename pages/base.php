@@ -24,7 +24,7 @@ return [
                 <?php renderInfoSection('tune', 'base.purpose_title', 'base.purpose_text'); ?>
                 <section class="surface-card function-list reveal">
                     <h2><?= t('base.functions_title') ?></h2>
-                    <?php foreach (['base.function_1', 'base.function_2', 'base.function_3', 'base.function_4'] as $key): ?>
+                    <?php foreach (['base.function_1', 'base.function_2', 'base.function_3', 'base.function_4', 'base.function_5'] as $key): ?>
                         <div><span class="material-symbols-rounded">check_circle</span><p><?= t($key) ?></p></div>
                     <?php endforeach; ?>
                 </section>

@@ -172,6 +172,46 @@ a.contact-card:hover { transform: translateY(-4px); border-color: rgba(72,215,19
 .reveal { opacity: 0; transform: translateY(18px); transition: opacity .65s ease, transform .65s ease; }
 .reveal.is-visible { opacity: 1; transform: none; }
 
+
+.architecture-diagram {
+    width: 100%;
+    margin-top: 2.5rem;
+    padding: 2rem;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.266);
+    border-radius: 24px;
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(48, 137, 255, 0.08),
+            transparent 65%
+        );
+}
+
+.architecture-diagram img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+    .architecture-diagram {
+        padding: 1rem;
+        border-radius: 16px;
+    }
+
+    .architecture-diagram img {
+        min-width: 700px;
+    }
+
+    .architecture-diagram {
+        overflow-x: auto;
+    }
+}
+
+
 @keyframes rotate { to { transform: rotate(360deg); } }
 @keyframes pulse { 50% { opacity: .35; transform: scaleX(.88); } }
 

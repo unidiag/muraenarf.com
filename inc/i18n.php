@@ -1,0 +1,358 @@
+<?php
+
+return [
+    'site.name' => 'MuraenaRF',
+
+    'site.tagline' => [
+        'Распределённая система управления ВЧ-сигналом',
+        'Distributed RF signal control system',
+    ],
+
+    'nav.menu' => [
+        'Меню',
+        'Menu',
+    ],
+
+    'nav.language' => [
+        'Язык',
+        'Language',
+    ],
+
+    'nav.github' => 'GitHub',
+
+    'nav.open' => [
+        'Открыть раздел',
+        'Open section',
+    ],
+
+    'footer.description' => [
+        'Открытый проект аппаратно-программной системы управления радиочастотным трактом.',
+        'An open hardware and software project for RF distribution control.',
+    ],
+
+    'footer.navigation' => [
+        'Разделы',
+        'Navigation',
+    ],
+
+    'footer.project' => [
+        'Проект',
+        'Project',
+    ],
+
+    'footer.rights' => [
+        'Все права защищены.',
+        'All rights reserved.',
+    ],
+
+    'common.learn_more' => [
+        'Подробнее',
+        'Learn more',
+    ],
+
+    'common.status_development' => [
+        'Проект в активной разработке',
+        'Under development',
+    ],
+
+    'main.menu' => [
+        'Главная',
+        'Home',
+    ],
+
+    'main.title' => [
+        'Управление ВЧ-сигналом там, где обычного кабеля уже недостаточно',
+        'RF signal control where an ordinary cable is no longer enough',
+    ],
+
+    'main.subtitle' => [
+        'MuraenaRF объединяет передатчик, управляемые исполнительные блоки и WebUI в единую систему адресного управления радиочастотным трактом.',
+        'MuraenaRF combines a transmitter, addressable output modules and a WebUI into a single RF distribution control system.',
+    ],
+
+    'main.hero_primary' => [
+        'Устройство проекта',
+        'Project architecture',
+    ],
+
+    'main.hero_secondary' => [
+        'Связаться с автором',
+        'Contact the author',
+    ],
+
+    'main.about_title' => [
+        'Что такое MuraenaRF',
+        'What is MuraenaRF',
+    ],
+
+    'main.architecture_alt' => [
+        'Структурная схема системы MuraenaRF',
+        'MuraenaRF system architecture diagram',
+    ],
+
+    'main.about_text' => [
+        'MuraenaRF — аппаратно-программная платформа для дистанционного управления распределением ВЧ-сигнала. Команды передаются по общему коаксиальному тракту, а исполнительные блоки реагируют только на назначенные им адреса.',
+        'MuraenaRF is hardware and software platform for remote RF signal distribution control. Commands travel through the existing coaxial network, while each output module responds only to its assigned address.',
+    ],
+
+    'main.problem_title' => [
+        'Задача проекта',
+        'Project goal',
+    ],
+
+    'main.problem_text' => [
+        'Система создана для объектов, где требуется удалённо включать, отключать или предупреждать отдельные абонентские линии без прокладки дополнительных управляющих кабелей.',
+        'The system is designed for facilities where it is necessary to remotely enable, disable, or issue alerts for individual subscriber lines without laying additional control cables.',
+    ],
+
+
+    'main.tx_title' => 'MuraenaTX',
+
+    'main.tx_text' => [
+        'Головной блок формирует команды и передаёт их в коаксиальную сеть.',
+        'The head-end unit generates commands and injects them into the coaxial network.',
+    ],
+
+    'main.rx_title' => 'MuraenaRX',
+
+    'main.rx_text' => [
+        'Адресный исполнительный блок управляет восемью абонентскими отводами.',
+        'An addressable output module controls eight subscriber taps.',
+    ],
+
+    'main.base_title' => 'MuraenaBase',
+
+    'main.base_text' => [
+        'WebUI для настройки адресов, команд, масок и состояния передатчика.',
+        'A WebUI for addresses, commands, masks and transmitter state.',
+    ],
+
+    'main.features_title' => [
+        'Основные принципы',
+        'Core principles',
+    ],
+
+    'main.feature_1' => [
+        'Передача управления по существующему коаксиальному тракту',
+        'Control data transmitted through the existing coaxial network',
+    ],
+
+    'main.feature_2' => [
+        'Индивидуальная адресация исполнительных модулей',
+        'Individual addressing of output modules',
+    ],
+
+    'main.feature_3' => [
+        'Независимое управление группами выходов через битовую маску',
+        'Independent output groups controlled by a bit mask',
+    ],
+
+    'main.feature_4' => [
+        'Открытая аппаратная и программная архитектура',
+        'Open hardware and software architecture',
+    ],
+
+    'tx.menu' => 'MuraenaTX',
+
+    'tx.title' => [
+        'MuraenaTX — головной передающий блок',
+        'MuraenaTX — head-end transmitter',
+    ],
+
+    'tx.subtitle' => [
+        'Формирует адресные команды управления и вводит их в коаксиальный тракт.',
+        'Generates addressable control commands and injects them into the coaxial network.',
+    ],
+
+    'tx.purpose_title' => [
+        'Назначение',
+        'Purpose',
+    ],
+
+    'tx.purpose_text' => [
+        'MuraenaTX является центральным узлом системы. Он получает команды от панели MuraenaBase, кодирует адрес, команду и маску выходов, после чего передаёт пакет исполнительным блокам.',
+        'MuraenaTX is the central node of the system. It receives commands from MuraenaBase, encodes the address, command and output mask, and transmits the packet to output modules.',
+    ],
+
+    'tx.device_title' => [
+        'Устройство',
+        'Hardware',
+    ],
+
+    'tx.device_text' => [
+        'Основой блока служит микроконтроллер ESP32-C3 и ВЧ-трансивер CC1101. Параметры передатчика и его текущее состояние сохраняются в энергонезависимой памяти.',
+        'The unit is based on an ESP32-C3 microcontroller and a CC1101 RF transceiver. Transmitter parameters and state are stored in non-volatile memory.',
+    ],
+
+    'tx.operation_title' => [
+        'Принцип действия',
+        'How it works',
+    ],
+
+    'tx.operation_text' => [
+        'Каждый пакет содержит адрес исполнительного блока, код команды и восьмибитную маску. Передатчик может быть программно включён или отключён, а установленное состояние восстанавливается после перезапуска.',
+        'Each packet contains an output module address, a command code and an eight-bit mask. The transmitter can be enabled or disabled in software and restores the saved state after restart.',
+    ],
+
+    'tx.protocol_title' => [
+        'Формат команды',
+        'Command format',
+    ],
+
+    'tx.protocol_example' => 'addr=0001 cmd=01 mask=11110000',
+
+    'rx.menu' => 'MuraenaRX',
+
+    'rx.title' => [
+        'MuraenaRX — исполнительный блок',
+        'MuraenaRX — output module',
+    ],
+
+    'rx.subtitle' => [
+        'Управляемый делитель на восемь абонентских отводов.',
+        'A controllable splitter with eight subscriber taps.',
+    ],
+
+    'rx.purpose_title' => [
+        'Назначение',
+        'Purpose',
+    ],
+
+    'rx.purpose_text' => [
+        'Исполнительный блок устанавливается непосредственно в распределительной сети и управляет прохождением сигнала к восьми независимым абонентским линиям.',
+        'The output module is installed directly in the distribution network and controls RF signal delivery to eight independent subscriber lines.',
+    ],
+
+    'rx.device_title' => [
+        'Устройство',
+        'Hardware',
+    ],
+
+    'rx.device_text' => [
+        'В составе блока используются приёмник команд, микроконтроллер, ВЧ-ключи и пассивная часть делителя. Питание и управляющий сигнал могут поступать по общему коаксиальному кабелю.',
+        'The module combines a command receiver, microcontroller, RF switches and a passive splitter section. Power and control data may share the same coaxial cable.',
+    ],
+
+    'rx.operation_title' => [
+        'Принцип действия',
+        'How it works',
+    ],
+
+    'rx.operation_text' => [
+        'Блок принимает пакеты, проверяет собственный адрес и применяет восьмибитную маску. Каждый бит соответствует отдельному абонентскому отводу.',
+        'The module receives packets, verifies its address and applies the eight-bit mask. Each bit represents one subscriber tap.',
+    ],
+
+    'rx.outputs_title' => [
+        'Восемь управляемых выходов',
+        'Eight controllable outputs',
+    ],
+
+    'rx.outputs_text' => [
+        'Выходы могут переключаться независимо или группами одной командой. Это позволяет быстро менять конфигурацию распределительной сети.',
+        'Outputs can be switched independently or in groups with a single command, allowing fast reconfiguration of the distribution network.',
+    ],
+
+    'base.menu' => 'MuraenaBase',
+
+    'base.title' => [
+        'MuraenaBase — панель управления',
+        'MuraenaBase — control panel',
+    ],
+
+    'base.subtitle' => [
+        'WebUI для настройки и контроля системы MuraenaRF.',
+        'A WebUI for configuring and monitoring MuraenaRF.',
+    ],
+
+    'base.purpose_title' => [
+        'Назначение',
+        'Purpose',
+    ],
+
+    'base.purpose_text' => [
+        'MuraenaBase предоставляет единый интерфейс для управления передатчиком и таблицей исполнительных адресов.',
+        'MuraenaBase provides a single interface for controlling the transmitter and the table of output module addresses.',
+    ],
+
+    'base.functions_title' => [
+        'Возможности',
+        'Features',
+    ],
+
+    'base.function_1' => [
+        'Просмотр и изменение адресов устройств',
+        'View and edit device addresses',
+    ],
+
+    'base.function_2' => [
+        'Настройка команд и битовых масок',
+        'Configure commands and bit masks',
+    ],
+
+    'base.function_3' => [
+        'Включение и отключение MuraenaTX',
+        'Enable and disable MuraenaTX',
+    ],
+
+    'base.function_4' => [
+        'Отображение объектов на карте',
+        'Display installation objects on a map',
+    ],
+    'base.function_5' => [
+        'API для интеграции с другими системами',
+        'API for integration with other systems',
+    ],
+
+    'base.technology_title' => [
+        'Технологии',
+        'Technology',
+    ],
+
+    'base.technology_text' => [
+        'Панель разрабатывалась как отдельное WebUI-приложение и взаимодействует с оборудованием через серверную часть проекта.',
+        'The panel is developed as a standalone WebUI application and communicates with the project hardware through its backend.',
+    ],
+
+    'contact.menu' => [
+        'Контакты',
+        'Contact',
+    ],
+
+    'contact.title' => [
+        'Связаться с автором',
+        'Contact the author',
+    ],
+
+    'contact.subtitle' => [
+        'Вопросы по проекту, предложения и техническое сотрудничество.',
+        'Project questions, suggestions and technical cooperation.',
+    ],
+
+    'contact.author_title' => [
+        'Автор проекта',
+        'Project author',
+    ],
+
+    'contact.author_name' => [
+        'Виталий Тумашевский',
+        'Vitali Tumasheuski',
+    ],
+
+    'contact.email_title' => [
+        'Электронная почта',
+        'Email',
+    ],
+
+    'contact.email' => 'info@muraenarf.com',
+
+    'contact.github_title' => [
+        'Исходный код',
+        'Source code',
+    ],
+
+    'contact.github_text' => [
+        'Репозитории проекта публикуются на GitHub.',
+        'Project repositories are published on GitHub.',
+    ],
+];

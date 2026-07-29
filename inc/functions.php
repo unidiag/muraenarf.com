@@ -3,6 +3,54 @@
 declare(strict_types=1);
 
 
+
+function getCountryCode(string $ip): ?string
+{
+    if (
+        !filter_var(
+            $ip,
+            FILTER_VALIDATE_IP,
+            FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE
+        )
+    ) {
+        return null;
+    }
+
+    $databaseFile = __DIR__ . '/geoip.mmdb';
+
+    if (!is_file($databaseFile) || !is_readable($databaseFile)) {
+        return null;
+    }
+
+    try {
+        $reader = new \MaxMind\Db\Reader($databaseFile);
+
+        try {
+            $record = $reader->get($ip);
+        } finally {
+            $reader->close();
+        }
+
+        if (!is_array($record)) {
+            return null;
+        }
+
+        $countryCode =
+            $record['country']['iso_code']
+            ?? $record['registered_country']['iso_code']
+            ?? null;
+
+        if (!is_string($countryCode) || $countryCode === '') {
+            return null;
+        }
+
+        return strtoupper($countryCode);
+    } catch (\Throwable) {
+        return null;
+    }
+}
+
+
 function getClientIp(): string
 {
     $forwardedFor = $_SERVER['HTTP_X_FORWARDED_FOR'] ?? '';
@@ -42,23 +90,79 @@ function detectLanguage(): string
     }
 
     $saved = strtolower((string) ($_COOKIE['muraenarf_lang'] ?? ''));
+
     if (in_array($saved, ['ru', 'en'], true)) {
         return $saved;
     }
 
-    return str_starts_with(getClientIp(), '10.8.0.') ? 'ru' : 'en';
+    $russianLanguageCountries = [
+        'AM', // Armenia
+        'AZ', // Azerbaijan
+        'BY', // Belarus
+        'KZ', // Kazakhstan
+        'KG', // Kyrgyzstan
+        'MD', // Moldova
+        'RU', // Russia
+        'TJ', // Tajikistan
+        'TM', // Turkmenistan
+        'UA', // Ukraine
+        'UZ', // Uzbekistan
+    ];
+
+    $countryCode = getCountryCode(getClientIp());
+
+    if (
+        $countryCode !== null
+        && in_array($countryCode, $russianLanguageCountries, true)
+    ) {
+        return 'ru';
+    }
+
+    return 'en';
 }
 
 function loadTranslations(string $language): array
 {
-    $file = __DIR__ . '/' . $language . '.php';
+    $file = __DIR__ . '/i18n.php';
 
     if (!is_file($file)) {
-        $file = __DIR__ . '/ru.php';
+        return [];
     }
 
-    $translations = require $file;
-    return is_array($translations) ? $translations : [];
+    $catalog = require $file;
+
+    if (!is_array($catalog)) {
+        return [];
+    }
+
+    // 0 — Russian, 1 — English.
+    $languageIndex = $language === 'en' ? 1 : 0;
+    $translations = [];
+
+    foreach ($catalog as $key => $value) {
+        if (is_string($value) || is_numeric($value)) {
+            // A scalar value is used for every language.
+            $translations[$key] = (string) $value;
+            continue;
+        }
+
+        if (!is_array($value)) {
+            continue;
+        }
+
+        // Use the selected language when available.
+        if (array_key_exists($languageIndex, $value)) {
+            $translations[$key] = (string) $value[$languageIndex];
+            continue;
+        }
+
+        // Fall back to the first element.
+        if (array_key_exists(0, $value)) {
+            $translations[$key] = (string) $value[0];
+        }
+    }
+
+    return $translations;
 }
 
 function t(string $key, ?string $fallback = null): string
