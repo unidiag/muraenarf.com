@@ -121,6 +121,71 @@ function detectLanguage(): string
     return 'en';
 }
 
+
+function minifyHtml(string $html): string
+{
+    if ($html === '') {
+        return $html;
+    }
+
+    $protectedBlocks = [];
+
+    $html = preg_replace_callback(
+        '~<(pre|textarea|script|style)\b[^>]*>.*?</\1>~is',
+        static function (array $matches) use (&$protectedBlocks): string {
+            $key = '___HTML_BLOCK_' . count($protectedBlocks) . '___';
+
+            $protectedBlocks[$key] = $matches[0];
+
+            return $key;
+        },
+        $html
+    );
+
+    if ($html === null) {
+        return '';
+    }
+
+    // Remove HTML comments, excluding conditional comments.
+    $html = preg_replace(
+        '/<!--(?!\[if).*?-->/s',
+        '',
+        $html
+    );
+
+    if ($html === null) {
+        return '';
+    }
+
+    // Remove tabs and line breaks.
+    $html = str_replace(
+        ["\r", "\n", "\t"],
+        '',
+        $html
+    );
+
+    // Collapse repeated spaces.
+    $html = preg_replace('/ {2,}/', ' ', $html);
+
+    if ($html === null) {
+        return '';
+    }
+
+    // Remove whitespace between HTML tags.
+    $html = preg_replace('/>\s+</', '><', $html);
+
+    if ($html === null) {
+        return '';
+    }
+
+    // Restore protected blocks unchanged.
+    if ($protectedBlocks !== []) {
+        $html = strtr($html, $protectedBlocks);
+    }
+
+    return trim($html);
+}
+
 function loadTranslations(string $language): array
 {
     $file = __DIR__ . '/i18n.php';

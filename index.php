@@ -9,6 +9,8 @@ require PROJECT_ROOT . '/vendor/autoload.php';
 require PROJECT_ROOT . '/inc/functions.php';
 require PROJECT_ROOT . '/inc/template.php';
 
+ob_start('minifyHtml');
+
 
 $language = detectLanguage();
 $translations = loadTranslations($language);
