@@ -255,3 +255,125 @@ a.contact-card:hover { transform: translateY(-4px); border-color: rgba(72,215,19
     *, *::before, *::after { scroll-behavior: auto !important; animation: none !important; transition-duration: .01ms !important; }
     .reveal { opacity: 1; transform: none; }
 }
+
+
+
+
+
+
+
+.video-modal {
+    position: fixed;
+    z-index: 1000;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    visibility: hidden;
+    opacity: 0;
+    transition:
+        opacity 0.2s ease,
+        visibility 0.2s ease;
+}
+
+.video-modal.is-open {
+    visibility: visible;
+    opacity: 1;
+}
+
+.video-modal__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.82);
+    backdrop-filter: blur(8px);
+}
+
+.video-modal__dialog {
+    position: relative;
+    z-index: 1;
+    width: min(1100px, 100%);
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 20px;
+    background: #10141c;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+    transform: translateY(20px) scale(0.98);
+    transition: transform 0.2s ease;
+}
+
+.video-modal.is-open .video-modal__dialog {
+    transform: translateY(0) scale(1);
+}
+
+.video-modal__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 64px;
+    padding: 12px 16px 12px 24px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.video-modal__title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.video-modal__close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    color: inherit;
+    cursor: pointer;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    transition: background 0.2s ease;
+}
+
+.video-modal__close:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.video-modal__player {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #000;
+}
+
+.video-modal__player iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+body.video-modal-open {
+    overflow: hidden;
+}
+
+@media (max-width: 768px) {
+    .video-modal {
+        padding: 12px;
+    }
+
+    .video-modal__dialog {
+        border-radius: 14px;
+    }
+
+    .video-modal__header {
+        min-height: 56px;
+        padding: 8px 8px 8px 16px;
+    }
+
+    .video-modal__title {
+        font-size: 1rem;
+    }
+}

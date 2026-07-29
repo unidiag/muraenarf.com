@@ -70,9 +70,20 @@ return [
         'MuraenaRF combines a transmitter, addressable output modules and a WebUI into a single RF distribution control system.',
     ],
 
-    'main.hero_primary' => [
-        'Устройство проекта',
-        'Project architecture',
+
+    'main.video_title' => [
+        'Видеообзор проекта',
+        'Project video overview',
+    ],
+
+    'main.video_url' => [
+        'EVHs7jmRdXk', // youtube video ID rus
+        'EVHs7jmRdXk', // youtube video ID eng
+    ],
+
+    'common.close' => [
+        'Закрыть',
+        'Close',
     ],
 
     'main.hero_secondary' => [

@@ -16,10 +16,13 @@ return [
                     <h1><?= t('main.title') ?></h1>
                     <p class="hero__lead"><?= t('main.subtitle') ?></p>
                     <div class="hero__actions">
-                        <a class="button button--primary" href="/tx">
-                            <?= t('main.hero_primary') ?>
-                            <span class="material-symbols-rounded">arrow_forward</span>
-                        </a>
+                        <button
+                            class="button button--primary"
+                            type="button"
+                            data-video-modal-open
+                        >
+                            <?= t('main.video_title') ?>
+                        </button>
                         <a class="button button--outlined" href="/contact"><?= t('main.hero_secondary') ?></a>
                     </div>
                 </div>
@@ -77,6 +80,52 @@ return [
                 </div>
             </div>
         </section>
+
+
+        <div
+            class="video-modal"
+            data-video-modal
+            aria-hidden="true"
+        >
+            <div
+                class="video-modal__overlay"
+                data-video-modal-close
+            ></div>
+
+            <div
+                class="video-modal__dialog"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="project-video-title"
+            >
+                <div class="video-modal__header">
+                    <h2
+                        class="video-modal__title"
+                        id="project-video-title"
+                    >
+                        <?= t('main.video_title') ?>
+                    </h2>
+
+                    <button
+                        class="video-modal__close"
+                        type="button"
+                        aria-label="<?= t('common.close') ?>"
+                        data-video-modal-close
+                    >
+                        <span class="material-symbols-outlined">
+                            X
+                        </span>
+                    </button>
+                </div>
+
+                <div
+                    class="video-modal__player"
+                    data-video-player
+                    data-video-url='https://www.youtube-nocookie.com/embed/<?= t('main.video_url') ?>?autoplay=1&rel=0'
+                ></div>
+            </div>
+        </div>
+
         <?php
     },
 ];

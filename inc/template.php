@@ -29,7 +29,7 @@ function renderTemplate(array $context): void
     <link rel="stylesheet" href="/assets/css/site.css<?= '?' . filemtime('/assets/css/site.css') ?>">
 
     <script src="https://code.jquery.com/jquery-4.0.0.min.js" defer></script>
-    <script src="/assets/js/site.js" defer></script>
+    <script src="/assets/js/site.js<?= '?' . filemtime('/assets/js/site.js') ?>" defer></script>
 </head>
 <body>
 <div class="page-background" aria-hidden="true"></div>
