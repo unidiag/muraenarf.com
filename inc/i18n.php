@@ -213,6 +213,7 @@ return [
         Мощность передатчика также регулируется программно [code]P=0...100[/code], что соответствует 73...113 dBµV на выходе блока при подключенной нагрузке 75 Ом.
         [br][br]
         Конструктивно схема собрана на печатной плате, помещённой в алюминиевый корпус размерами 80x54x23 мм. [url=/sources/MuraenaTX/MuraenaTX.lay6]Печатную плату[/url] несложно изготовить [img=muraenatx_pcb.jpg]самостоятельно[/img] травлением, [img=muraenatx_milling.jpg]фрезеровкой[/img] или собрать [img=muraenatx_proto.jpg]на макетной плате[/img].
+        Ещё [img=muraenatx_examples.jpg]примеры собранных экземпляров[/img].
         ',
 
         'The unit is based on an [img=muraenatx_scheme.jpg]ESP32-C3 microcontroller and a CC1101 RF transceiver[/img]. The modules are connected via the SPI interface without using the additional GDO0 transmission-complete signal from the CC1101. In this configuration, the end of transmission is detected in software through the [code]MARCSTATE[/code] and [code]TXBYTES[/code] registers.
@@ -224,6 +225,7 @@ return [
         The transmitter output power is also software-adjustable over the range [code]P=0...100[/code], corresponding to approximately 73...113 dBµV at the unit output with a 75-ohm load connected.
         [br][br]
         The circuit is assembled on a printed circuit board installed in an aluminium enclosure measuring 80x54x23 mm. The [url=/sources/MuraenaTX/MuraenaTX.lay6]printed circuit board[/url] can be [img=muraenatx_pcb.jpg]manufactured[/img] relatively easily by etching, [img=muraenatx_milling.jpg]milling[/img], or by assembling the circuit [img=muraenatx_proto.jpg]on a prototyping board[/img].
+        Also, [img=muraenatx_examples.jpg]examples of assembled units[/img].
         ',
     ],
 
