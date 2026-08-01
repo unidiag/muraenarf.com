@@ -363,9 +363,13 @@ function renderInfoSection(string $icon, string $title, string $text): void
         <div class="content-section__icon">
             <span class="material-symbols-rounded"><?= e($icon) ?></span>
         </div>
+
         <div>
             <h2><?= t($title) ?></h2>
-            <p><?= t($text) ?></p>
+
+            <div class="content-section__text">
+                <?= t($text) ?>
+            </div>
         </div>
     </section>
     <?php
@@ -485,9 +489,44 @@ function renderPlainTranslatedText(
                 str_contains($code, "\n")
                 || str_contains($code, "\r")
             ) {
-                $result .= '<pre class="code-block"><code>'
+                global $translations;
+
+                $copyLabel = htmlspecialchars(
+                    (string) (
+                        $translations['common.copy_code']
+                        ?? 'Copy code'
+                    ),
+                    ENT_QUOTES | ENT_SUBSTITUTE,
+                    'UTF-8'
+                );
+
+                $copiedLabel = htmlspecialchars(
+                    (string) (
+                        $translations['common.code_copied']
+                        ?? 'Copied'
+                    ),
+                    ENT_QUOTES | ENT_SUBSTITUTE,
+                    'UTF-8'
+                );
+
+                $result .= '<div class="code-block-wrapper">'
+                    . '<button'
+                    . ' class="code-block__copy"'
+                    . ' type="button"'
+                    . ' aria-label="' . $copyLabel . '"'
+                    . ' title="' . $copyLabel . '"'
+                    . ' data-copy-code'
+                    . ' data-copy-label="' . $copyLabel . '"'
+                    . ' data-copied-label="' . $copiedLabel . '"'
+                    . '>'
+                    . '<span class="material-symbols-rounded" aria-hidden="true">'
+                    . 'content_copy'
+                    . '</span>'
+                    . '</button>'
+                    . '<pre class="code-block"><code>'
                     . $escapedCode
-                    . '</code></pre>';
+                    . '</code></pre>'
+                    . '</div>';
             } else {
                 $result .= '<code class="inline-code">'
                     . $escapedCode

@@ -187,7 +187,7 @@ return [
         Аппаратное ограничение в [url=/sources/CC1101.PDF]CC1101[/url] позволяет передавать не более 64 байт полезной нагрузки в одном RF-пакете. Поэтому MuraenaTX формирует один пакет с состояниями до 15 устройств:[br][code]TYPE + COUNT + (ADDR_H + ADDR_L + CMD + MASK) х 15 = 62 байта[/code].[br]
         Если приёмников в сети больше, то информация передаётся последовательными пакетами с учётом приоритета последних изменённых состояний.
         При максимальном количестве приёмников до 16384 (адреса [code]0000-3FFF[/code]) период полного цикла может составить несколько минут.
-        Разумеется, если вы используете вменяемое количество исполнительных блоков (100-200 шт), то их обновление происходит гораздо быстрее - в течение нескольких первых секунд.',
+        Разумеется, если вы используете вменяемое количество исполнительных блоков (100-200 шт), то их обновление происходит значительно быстрее в течение нескольких секунд.',
 
         'MuraenaTX is the central node of the system.
         In general terms, it is a transmitter that generates addressable commands for [url=/rx]MuraenaRX[/url] receiver modules at a frequency of 320 MHz (SK-22).
@@ -204,16 +204,23 @@ return [
     ],
 
     'tx.device_text' => [
-        'Основой блока служит [img=muraenatx_scheme.jpg]микроконтроллер ESP32-C3 и ВЧ-трансивер CC1101[/img]. Модули соединены между собой по SPI-интерфейсу без использования лишнего провода ожидания передачи GDO0 от CC1101. В этом случае завершение передачи определяется программно через регистры [code]MARCSTATE[/code] и [code]TXBYTES[/code].
+        'Основой блока служит [img=muraenatx_scheme.jpg]микроконтроллер ESP32-C3 и ВЧ-трансивер CC1101[/img].
+        Модули соединены между собой по SPI, но без использования лишнего провода ожидания передачи GDO0 от CC1101. В этом случае завершение передачи определяется программно через регистры [code]MARCSTATE[/code] и [code]TXBYTES[/code].
+        [br][br]
+        Конструктивно схема [img=muraenatx_examples.jpg]собрана на печатной плате[/img], помещённой в алюминиевый корпус размерами 80x54x23 мм. [url=/sources/MuraenaTX/MuraenaTX.lay6]Печатную плату[/url] несложно изготовить [img=muraenatx_pcb.jpg]самостоятельно[/img] травлением, [img=muraenatx_milling.jpg]фрезеровкой[/img] или собрать [img=muraenatx_proto.jpg]на макетной плате[/img].[br][br]
+        Контроллер прошивается через среду Arduino IDE ([url=/sources/MuraenaTX/]файлы[/url]) или с помощью утилиты ESPTOOL:
+[code]sudo apt update
+sudo apt install esptool
+wget https://muraenarf.com/sources/MuraenaTX/build/esp32.esp32.esp32c3/MuraenaTX.ino.merged.bin
+esptool --chip esp32c3 --port /dev/ttyACM0 --baud 921600 write-flash 0x0 MuraenaTX.ino.merged.bin
+[/code]
+        После успешной прошивки, светодиод [code]DATA[/code] начнёт мигать с частотой около 5 Гц, что означает установленную связь с CC1101 и успешную передачу на выход RF-пакетов.[br][br]
         Параметры передатчика, его текущее состояние и команды исполнительным блокам сохраняются в энергонезависимой памяти NVS.
         Управляется микроконтроллер ESP32-C3 посредством виртуального COM-порта, создаваемого при подключении к серверу [code]/dev/ttyACM0[/code].
         Параметры порта: 115200 бод, 8 бит данных, без контроля чётности, 1 стоп-бит. Команды передаются в виде текстовых строк с разделением полей пробелами и окончанием строки символом её перевода [code]\n[/code].[br][br]
         Передатчик может быть включён или отключён программно, а установленное состояние восстанавливается после перезапуска независимо от состояния сервера.
         Управление передатчиком может быть выполнено как через [url=/base]MuraenaBase[/url] (WebUI, API), так и через специально [url=/sources/MuraenaCOM/muraenacom]написанную[/url] утилиту [img=muraenacom.jpg]MuraenaCOM[/img].
-        Мощность передатчика также регулируется программно [code]P=0...100[/code], что соответствует 73...113 dBµV на выходе блока при подключенной нагрузке 75 Ом.
-        [br][br]
-        Конструктивно схема собрана на печатной плате, помещённой в алюминиевый корпус размерами 80x54x23 мм. [url=/sources/MuraenaTX/MuraenaTX.lay6]Печатную плату[/url] несложно изготовить [img=muraenatx_pcb.jpg]самостоятельно[/img] травлением, [img=muraenatx_milling.jpg]фрезеровкой[/img] или собрать [img=muraenatx_proto.jpg]на макетной плате[/img].
-        Ещё [img=muraenatx_examples.jpg]примеры собранных экземпляров[/img].
+        Мощность передатчика регулируется программно [code]P=0...100[/code], что соответствует 73...113 dBµV на выходе блока при подключенной нагрузке 75 Ом.
         ',
 
         'The unit is based on an [img=muraenatx_scheme.jpg]ESP32-C3 microcontroller and a CC1101 RF transceiver[/img]. The modules are connected via the SPI interface without using the additional GDO0 transmission-complete signal from the CC1101. In this configuration, the end of transmission is detected in software through the [code]MARCSTATE[/code] and [code]TXBYTES[/code] registers.
@@ -224,7 +231,7 @@ return [
         The transmitter can be controlled either through [url=/base]MuraenaBase[/url] using its WebUI and API, or through the specially [url=/sources/MuraenaCOM/muraenacom]developed[/url] [img=muraenacom.jpg]MuraenaCOM[/img] utility.
         The transmitter output power is also software-adjustable over the range [code]P=0...100[/code], corresponding to approximately 73...113 dBµV at the unit output with a 75-ohm load connected.
         [br][br]
-        The circuit is assembled on a printed circuit board installed in an aluminium enclosure measuring 80x54x23 mm. The [url=/sources/MuraenaTX/MuraenaTX.lay6]printed circuit board[/url] can be [img=muraenatx_pcb.jpg]manufactured[/img] relatively easily by etching, [img=muraenatx_milling.jpg]milling[/img], or by assembling the circuit [img=muraenatx_proto.jpg]on a prototyping board[/img].
+        The circuit is assembled on a printed circuit board installed in an aluminium enclosure measuring 80x54x23 mm. The [url=/sources/MuraenaTX/MuraenaTX.lay6]printed circuit board[/url] can be [img=muraenatx_pcb.jpg]manufactured[/img] relatively easily by etching, [img=muraenatx_milling.jpg]milling[/img], or by assembling the circuit [img=muraenatx_proto.jpg]on a prototyping board[/img].[br]
         Also, [img=muraenatx_examples.jpg]examples of assembled units[/img].
         ',
     ],
@@ -405,5 +412,18 @@ return [
         'Сложность самостоятельного изготовления',
         'DIY build difficulty',
     ],
+
+
+
+    'common.copy_code' => [
+        'Копировать код',
+        'Copy code',
+    ],
+
+    'common.code_copied' => [
+        'Скопировано',
+        'Copied',
+    ],
+
 
 ];
