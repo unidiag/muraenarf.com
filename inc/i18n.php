@@ -191,11 +191,11 @@ return [
 
         'MuraenaTX is the central node of the system.
         In general terms, it is a transmitter that generates addressable commands for [url=/rx]MuraenaRX[/url] receiver modules at a frequency of 320 MHz (SK-22).
-        It uses GFSK modulation with a deviation of no more than 30 kHz. The data rate is approximately 57.6 kbaud. The [img=tx-spectrum.jpg]signal spectrum[/img] showed good results when observed with an SDR receiver and does not interfere with the broadcast television channels.[br][br]
+        It uses GFSK modulation with a deviation of no more than 30 kHz. The data rate is approximately 57.6 kbaud. The [img=tx-spectrum.jpg]signal spectrum[/img] showed good results when observed with an SDR receiver, and the transmitter signal does not interfere with broadcast television channels.[br][br]
         The hardware limitation of the [url=/sources/CC1101.PDF]CC1101[/url] allows no more than 64 bytes of payload to be transmitted in a single RF packet. Therefore, MuraenaTX creates one packet containing the states of up to 15 devices:[br][code]TYPE + COUNT + (ADDR_H + ADDR_L + CMD + MASK) x 15 = 62 bytes[/code].[br]
-        If the network contains more receivers, their information is transmitted sequentially, with priority given to the most recently changed states.
-        With the maximum supported number of 16,384 receivers using addresses [code]0000-3FFF[/code], practical tests showed that a complete update cycle takes slightly more than one minute.
-        Naturally, when a reasonable number of output modules is used, such as 100-200 units, their states are updated much faster, within the first few seconds.',
+        If the network contains more receivers, their information is transmitted in consecutive packets, with priority given to the most recently changed states.
+        With the maximum supported number of 16,384 receivers using addresses [code]0000-3FFF[/code], a complete update cycle may take several minutes.
+        Naturally, when a reasonable number of output modules is used, such as 100-200 units, their states are updated much faster, within several seconds.',
     ],
 
     'tx.device_title' => [
@@ -209,7 +209,7 @@ return [
         [br][br]
         Конструктивно схема [img=muraenatx_examples.jpg]собрана на печатной плате[/img], помещённой в алюминиевый корпус размерами 80x54x23 мм. [url=/sources/MuraenaTX/MuraenaTX.lay6]Печатную плату[/url] несложно изготовить [img=muraenatx_pcb.jpg]самостоятельно[/img] травлением, [img=muraenatx_milling.jpg]фрезеровкой[/img] или собрать [img=muraenatx_proto.jpg]на макетной плате[/img].[br][br]
         Контроллер прошивается через среду Arduino IDE ([url=/sources/MuraenaTX/]файлы[/url]) или с помощью утилиты ESPTOOL:
-[code]sudo apt update
+    [code]sudo apt update
 sudo apt install esptool
 wget https://muraenarf.com/sources/MuraenaTX/build/esp32.esp32.esp32c3/MuraenaTX.ino.merged.bin
 esptool --chip esp32c3 --port /dev/ttyACM0 --baud 921600 write-flash 0x0 MuraenaTX.ino.merged.bin
@@ -223,16 +223,23 @@ esptool --chip esp32c3 --port /dev/ttyACM0 --baud 921600 write-flash 0x0 Muraena
         Мощность передатчика регулируется программно [code]P=0...100[/code], что соответствует 73...113 dBµV на выходе блока при подключенной нагрузке 75 Ом.
         ',
 
-        'The unit is based on an [img=muraenatx_scheme.jpg]ESP32-C3 microcontroller and a CC1101 RF transceiver[/img]. The modules are connected via the SPI interface without using the additional GDO0 transmission-complete signal from the CC1101. In this configuration, the end of transmission is detected in software through the [code]MARCSTATE[/code] and [code]TXBYTES[/code] registers.
+        'The unit is based on an [img=muraenatx_scheme.jpg]ESP32-C3 microcontroller and a CC1101 RF transceiver[/img].
+        The modules are connected via SPI without using the additional GDO0 transmission-complete signal from the CC1101. In this configuration, the end of transmission is detected in software through the [code]MARCSTATE[/code] and [code]TXBYTES[/code] registers.
+        [br][br]
+        The circuit is [img=muraenatx_examples.jpg]assembled on a printed circuit board[/img] installed in an aluminium enclosure measuring 80x54x23 mm. The [url=/sources/MuraenaTX/MuraenaTX.lay6]printed circuit board[/url] can be manufactured [img=muraenatx_pcb.jpg]independently[/img] by etching, [img=muraenatx_milling.jpg]milling[/img], or the circuit can be assembled [img=muraenatx_proto.jpg]on a prototyping board[/img].[br][br]
+        The controller can be flashed using the Arduino IDE ([url=/sources/MuraenaTX/]project files[/url]) or with the ESPTOOL utility:
+    [code]sudo apt update
+sudo apt install esptool
+wget https://muraenarf.com/sources/MuraenaTX/build/esp32.esp32.esp32c3/MuraenaTX.ino.merged.bin
+esptool --chip esp32c3 --port /dev/ttyACM0 --baud 921600 write-flash 0x0 MuraenaTX.ino.merged.bin
+[/code]
+        After successful flashing, the [code]DATA[/code] LED will start blinking at approximately 5 Hz. This indicates that communication with the CC1101 has been established and RF packets are being transmitted successfully.[br][br]
         The transmitter parameters, its current state, and commands for the output modules are stored in NVS non-volatile memory.
         The ESP32-C3 microcontroller is controlled through a virtual COM port created when the device is connected to the server: [code]/dev/ttyACM0[/code].
         The serial port settings are 115200 baud, 8 data bits, no parity, and 1 stop bit. Commands are transmitted as text lines with space-separated fields and terminated by the newline character [code]\n[/code].[br][br]
-        The transmitter can be enabled or disabled in software, and its configured state is restored after a restart independently of the server state.
+        The transmitter can be enabled or disabled in software, and the selected state is restored after a restart independently of the server state.
         The transmitter can be controlled either through [url=/base]MuraenaBase[/url] using its WebUI and API, or through the specially [url=/sources/MuraenaCOM/muraenacom]developed[/url] [img=muraenacom.jpg]MuraenaCOM[/img] utility.
-        The transmitter output power is also software-adjustable over the range [code]P=0...100[/code], corresponding to approximately 73...113 dBµV at the unit output with a 75-ohm load connected.
-        [br][br]
-        The circuit is assembled on a printed circuit board installed in an aluminium enclosure measuring 80x54x23 mm. The [url=/sources/MuraenaTX/MuraenaTX.lay6]printed circuit board[/url] can be [img=muraenatx_pcb.jpg]manufactured[/img] relatively easily by etching, [img=muraenatx_milling.jpg]milling[/img], or by assembling the circuit [img=muraenatx_proto.jpg]on a prototyping board[/img].[br]
-        Also, [img=muraenatx_examples.jpg]examples of assembled units[/img].
+        The transmitter output power is adjusted in software over the range [code]P=0...100[/code], corresponding to approximately 73...113 dBµV at the unit output with a 75-ohm load connected.
         ',
     ],
 
