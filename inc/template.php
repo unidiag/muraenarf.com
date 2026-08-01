@@ -26,10 +26,10 @@ function renderTemplate(array $context): void
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,300..700,0..1,-50..200" rel="stylesheet">
-    <link rel="stylesheet" href="/assets/css/site.css<?= '?' . filemtime('/assets/css/site.css') ?>">
+    <link rel="stylesheet" href="/assets/css/site.css<?= '?' . filemtime(PROJECT_ROOT . '/assets/css/site.css') ?>">
 
     <script src="https://code.jquery.com/jquery-4.0.0.min.js" defer></script>
-    <script src="/assets/js/site.js<?= '?' . filemtime('/assets/js/site.js') ?>" defer></script>
+    <script src="/assets/js/site.js<?= '?' . filemtime(PROJECT_ROOT . '/assets/js/site.js') ?>" defer></script>
 </head>
 <body>
 <div class="page-background" aria-hidden="true"></div>

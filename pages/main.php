@@ -33,6 +33,11 @@ return [
                         </a>
                     </div>
                 </div>
+            <div class="hero__visual">
+                <div class="hero__diy-level">
+                    <?= diyLevel(6) ?>
+                </div>
+
                 <div class="hero-visual reveal" aria-hidden="true">
                     <div class="rf-orbit rf-orbit--one"></div>
                     <div class="rf-orbit rf-orbit--two"></div>

@@ -122,6 +122,40 @@ function detectLanguage(): string
 }
 
 
+function diyLevel(int $level): string
+{
+    $level = max(0, min(10, $level));
+
+    $segments = '';
+
+    for ($i = 1; $i <= 10; $i++) {
+        $class = 'diy-level__segment';
+
+        if ($i <= $level) {
+            $class .= ' diy-level__segment--active';
+        }
+
+        $segments .= sprintf(
+            '<span class="%s" aria-hidden="true"></span>',
+            $class
+        );
+    }
+
+    return sprintf(
+        '<div class="diy-level" role="meter" aria-valuemin="0" aria-valuemax="10" aria-valuenow="%1$d">'
+        . '<div class="diy-level__header">'
+        . '<span class="diy-level__title">%2$s</span>'
+        . '<span class="diy-level__value">%1$d/10</span>'
+        . '</div>'
+        . '<div class="diy-level__scale">%3$s</div>'
+        . '</div>',
+        $level,
+        t('common.diy_level'),
+        $segments
+    );
+}
+
+
 function minifyHtml(string $html): string
 {
     if ($html === '') {
@@ -338,10 +372,75 @@ function renderInfoSection(string $icon, string $title, string $text): void
 }
 
 
-function renderTranslatedText(string $text): string
+
+
+
+function normalizeCustomUrl(string $url): ?string
 {
+    $url = trim($url);
+
+    if ($url === '' || preg_match('/[\x00-\x1F\x7F]/', $url)) {
+        return null;
+    }
+
+    // Internal absolute path.
+    if (str_starts_with($url, '/') && !str_starts_with($url, '//')) {
+        return $url;
+    }
+
+    // External or absolute same-site URL.
+    if (!filter_var($url, FILTER_VALIDATE_URL)) {
+        return null;
+    }
+
+    $scheme = strtolower((string) parse_url($url, PHP_URL_SCHEME));
+
+    if (!in_array($scheme, ['http', 'https'], true)) {
+        return null;
+    }
+
+    return $url;
+}
+
+function isExternalUrl(string $url): bool
+{
+    if (str_starts_with($url, '/')) {
+        return false;
+    }
+
+    $urlHost = strtolower((string) parse_url($url, PHP_URL_HOST));
+
+    if ($urlHost === '') {
+        return false;
+    }
+
+    $currentHost = strtolower((string) ($_SERVER['HTTP_HOST'] ?? ''));
+
+    // Remove the port from the current host.
+    $currentHost = preg_replace('/:\d+$/', '', $currentHost) ?? $currentHost;
+
+    return $currentHost === '' || $urlHost !== $currentHost;
+}
+
+
+function renderPlainTranslatedText(
+    string $text,
+    bool $allowLinks = true
+): string {
+    $patterns = [
+        '\[code\].*?\[/code\]',
+        '\[br\]',
+    ];
+
+    if ($allowLinks) {
+        array_unshift(
+            $patterns,
+            '\[url=[^\]]+\].*?\[/url\]'
+        );
+    }
+
     $parts = preg_split(
-        '~(\[img=[^\]]+\].*?\[/img\])~isu',
+        '~(' . implode('|', $patterns) . ')~isu',
         $text,
         -1,
         PREG_SPLIT_DELIM_CAPTURE
@@ -353,6 +452,113 @@ function renderTranslatedText(string $text): string
             ENT_QUOTES | ENT_SUBSTITUTE,
             'UTF-8'
         );
+    }
+
+    $result = '';
+
+    foreach ($parts as $part) {
+        if ($part === '') {
+            continue;
+        }
+
+        if (strcasecmp($part, '[br]') === 0) {
+            $result .= '<br>';
+            continue;
+        }
+
+        if (
+            preg_match(
+                '~^\[code\](.*?)\[/code\]$~isu',
+                $part,
+                $matches
+            )
+        ) {
+            $code = $matches[1];
+
+            $escapedCode = htmlspecialchars(
+                $code,
+                ENT_QUOTES | ENT_SUBSTITUTE,
+                'UTF-8'
+            );
+
+            if (
+                str_contains($code, "\n")
+                || str_contains($code, "\r")
+            ) {
+                $result .= '<pre class="code-block"><code>'
+                    . $escapedCode
+                    . '</code></pre>';
+            } else {
+                $result .= '<code class="inline-code">'
+                    . $escapedCode
+                    . '</code>';
+            }
+
+            continue;
+        }
+
+        if (
+            $allowLinks
+            && preg_match(
+                '~^\[url=([^\]]+)\](.*?)\[/url\]$~isu',
+                $part,
+                $matches
+            )
+        ) {
+            $url = normalizeCustomUrl($matches[1]);
+            $label = $matches[2];
+
+            if ($url === null) {
+                $result .= renderPlainTranslatedText(
+                    $label,
+                    false
+                );
+
+                continue;
+            }
+
+            $attributes = '';
+
+            if (isExternalUrl($url)) {
+                $attributes = ' target="_blank"'
+                    . ' rel="noopener noreferrer"';
+            }
+
+            $result .= sprintf(
+                '<a class="inline-url" href="%s"%s>%s</a>',
+                htmlspecialchars(
+                    $url,
+                    ENT_QUOTES | ENT_SUBSTITUTE,
+                    'UTF-8'
+                ),
+                $attributes,
+                renderPlainTranslatedText($label, false)
+            );
+
+            continue;
+        }
+
+        $result .= htmlspecialchars(
+            $part,
+            ENT_QUOTES | ENT_SUBSTITUTE,
+            'UTF-8'
+        );
+    }
+
+    return $result;
+}
+
+function renderTranslatedText(string $text): string
+{
+    $parts = preg_split(
+        '~(\[img=[^\]]+\].*?\[/img\])~isu',
+        $text,
+        -1,
+        PREG_SPLIT_DELIM_CAPTURE
+    );
+
+    if ($parts === false) {
+        return renderPlainTranslatedText($text);
     }
 
     $result = '';
@@ -379,12 +585,7 @@ function renderTranslatedText(string $text): string
                     $filename
                 )
             ) {
-                $result .= htmlspecialchars(
-                    $caption,
-                    ENT_QUOTES | ENT_SUBSTITUTE,
-                    'UTF-8'
-                );
-
+                $result .= renderPlainTranslatedText($caption);
                 continue;
             }
 
@@ -398,25 +599,29 @@ function renderTranslatedText(string $text): string
                     'UTF-8'
                 ),
                 htmlspecialchars(
-                    $caption,
+                    trim(
+                        preg_replace(
+                            [
+                                '~\[br\]~i',
+                                '~\[/?code\]~i',
+                            ],
+                            [
+                                ' ',
+                                '',
+                            ],
+                            $caption
+                        ) ?? $caption
+                    ),
                     ENT_QUOTES | ENT_SUBSTITUTE,
                     'UTF-8'
                 ),
-                htmlspecialchars(
-                    $caption,
-                    ENT_QUOTES | ENT_SUBSTITUTE,
-                    'UTF-8'
-                )
+                renderPlainTranslatedText($caption)
             );
 
             continue;
         }
 
-        $result .= htmlspecialchars(
-            $part,
-            ENT_QUOTES | ENT_SUBSTITUTE,
-            'UTF-8'
-        );
+        $result .= renderPlainTranslatedText($part);
     }
 
     return $result;

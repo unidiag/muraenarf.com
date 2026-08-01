@@ -181,8 +181,21 @@ return [
     ],
 
     'tx.purpose_text' => [
-        'MuraenaTX является центральным узлом системы. Он получает команды от панели MuraenaBase, кодирует адрес, команду и маску выходов, после чего передаёт пакет исполнительным блокам.',
-        'MuraenaTX is the central node of the system. It receives commands from MuraenaBase, encodes the address, command and output mask, and transmits the packet to output modules.',
+        'MuraenaTX является центральным узлом системы.
+        В общем смысле - это передатчик, формирующий адресные команды для исполнительных приёмников [url=/rx]MuraenaRX[/url] на частоте 320 MHz (SK-22).
+        Модуляция GFSK с девиацией не более 30 кГц. Скорость передачи около 57.6 кбод. [img=tx-spectrum.jpg]Спектр сигнала[/img] показал достойные результаты в SDR-приёмнике и на вещаемые телеканалы сигнал передатчика никак не влияет.[br][br]
+        Аппаратное ограничение в [url=/sources/CC1101.PDF]CC1101[/url] позволяет передавать не более 64 байт полезной нагрузки в одном RF-пакете. Поэтому MuraenaTX формирует один пакет с состояниями до 15 устройств:[br][code]TYPE + COUNT + (ADDR_H + ADDR_L + CMD + MASK) х 15 = 62 байта[/code].[br]
+        Если приёмников в сети больше, то информация передаётся последовательными пакетами с учётом приоритета последних изменённых состояний.
+        При максимальном количестве приёмников до 16384 (адреса [code]0000-3FFF[/code]) период полного цикла может составить несколько минут.
+        Разумеется, если вы используете вменяемое количество исполнительных блоков (100-200 шт), то их обновление происходит гораздо быстрее - в течение нескольких первых секунд.',
+
+        'MuraenaTX is the central node of the system.
+        In general terms, it is a transmitter that generates addressable commands for [url=/rx]MuraenaRX[/url] receiver modules at a frequency of 320 MHz (SK-22).
+        It uses GFSK modulation with a deviation of no more than 30 kHz. The data rate is approximately 57.6 kbaud. The [img=tx-spectrum.jpg]signal spectrum[/img] showed good results when observed with an SDR receiver and does not interfere with the broadcast television channels.[br][br]
+        The hardware limitation of the [url=/sources/CC1101.PDF]CC1101[/url] allows no more than 64 bytes of payload to be transmitted in a single RF packet. Therefore, MuraenaTX creates one packet containing the states of up to 15 devices:[br][code]TYPE + COUNT + (ADDR_H + ADDR_L + CMD + MASK) x 15 = 62 bytes[/code].[br]
+        If the network contains more receivers, their information is transmitted sequentially, with priority given to the most recently changed states.
+        With the maximum supported number of 16,384 receivers using addresses [code]0000-3FFF[/code], practical tests showed that a complete update cycle takes slightly more than one minute.
+        Naturally, when a reasonable number of output modules is used, such as 100-200 units, their states are updated much faster, within the first few seconds.',
     ],
 
     'tx.device_title' => [
@@ -191,7 +204,16 @@ return [
     ],
 
     'tx.device_text' => [
-        'Основой блока служит микроконтроллер ESP32-C3 и ВЧ-трансивер CC1101. Параметры передатчика и его текущее состояние сохраняются в энергонезависимой памяти.',
+        'Основой блока служит [img=muraenatx_scheme.jpg]микроконтроллер ESP32-C3 и ВЧ-трансивер CC1101[/img]. Модули соединены между собой по SPI-интерфейсу без использования лишнего провода ожидания передачи GDO0 от CC1101. В этом случае завершение передачи определяется программно через регистры [code]MARCSTATE[/code] и [code]TXBYTES[/code].
+        Параметры передатчика, его текущее состояние и команды исполнительным блокам сохраняются в энергонезависимой памяти NVS.
+        Управляется микроконтроллер ESP32-C3 посредством виртуального COM-порта, создаваемого при подключении к серверу [code]/dev/ttyACM0[/code].
+        Параметры порта: 115200 бод, 8 бит данных, без контроля чётности, 1 стоп-бит. Команды передаются в виде текстовых строк с разделением полей пробелами и окончанием строки символом её перевода [code]\n[/code].[br][br]
+        Передатчик может быть включён или отключён программно, а установленное состояние восстанавливается после перезапуска независимо от состояния сервера.
+        Управление передатчиком может быть выполнено как через [url=/base]MuraenaBase[/url] (WebUI, API), так и через специально [url=/sources/MuraenaCOM/muraenacom]написанную[/url] утилиту [img=muraenacom.jpg]MuraenaCOM[/img].
+        Мощность передатчика также регулируется программно [code]P=0...100[/code], что соответствует 73...113 dBµV на выходе блока при подключенной нагрузке 75 Ом.
+        [br][br]
+        Конструктивно схема собрана на печатной плате, помещённой в алюминиевый корпус размерами 80x54x23 мм. [url=/sources/MuraenaTX/MuraenaTX.lay6]Печатную плату[/url] несложно изготовить самостоятельно [img=muraenatx_pcb.jpg]травлением[/img], фрезеровкой или собрать на макетной плате.
+        ',
         'The unit is based on an ESP32-C3 microcontroller and a CC1101 RF transceiver. Transmitter parameters and state are stored in non-volatile memory.',
     ],
 
@@ -366,4 +388,10 @@ return [
         'Репозитории проекта публикуются на GitHub.',
         'Project repositories are published on GitHub.',
     ],
+
+    'common.diy_level' => [
+        'Сложность самостоятельного изготовления',
+        'DIY build difficulty',
+    ],
+
 ];
