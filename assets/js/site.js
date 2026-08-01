@@ -102,7 +102,16 @@ if (videoModal && videoModalOpenButton) {
 }
 
 
+const upperFirst = (text) => {
+    const value = text.trim();
 
+    if (!value) {
+        return "";
+    }
+
+    return value.charAt(0).toLocaleUpperCase()
+        + value.slice(1);
+};
 
 
 const imageModal = document.querySelector("[data-image-modal]");
@@ -136,7 +145,7 @@ if (imageModal) {
         modalImage.alt = imageAlt;
 
         if (modalTitle) {
-            modalTitle.textContent = imageAlt;
+            modalTitle.textContent = upperFirst(imageAlt);
         }
 
         imageModal.classList.add("is-open");
