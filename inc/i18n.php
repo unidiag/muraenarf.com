@@ -214,7 +214,17 @@ return [
         [br][br]
         Конструктивно схема собрана на печатной плате, помещённой в алюминиевый корпус размерами 80x54x23 мм. [url=/sources/MuraenaTX/MuraenaTX.lay6]Печатную плату[/url] несложно изготовить самостоятельно [img=muraenatx_pcb.jpg]травлением[/img], фрезеровкой или собрать на макетной плате.
         ',
-        'The unit is based on an ESP32-C3 microcontroller and a CC1101 RF transceiver. Transmitter parameters and state are stored in non-volatile memory.',
+
+        'The unit is based on an [img=muraenatx_scheme.jpg]ESP32-C3 microcontroller and a CC1101 RF transceiver[/img]. The modules are connected via the SPI interface without using the additional GDO0 transmission-complete signal from the CC1101. In this configuration, the end of transmission is detected in software through the [code]MARCSTATE[/code] and [code]TXBYTES[/code] registers.
+        The transmitter parameters, its current state, and commands for the output modules are stored in NVS non-volatile memory.
+        The ESP32-C3 microcontroller is controlled through a virtual COM port created when the device is connected to the server: [code]/dev/ttyACM0[/code].
+        The serial port settings are 115200 baud, 8 data bits, no parity, and 1 stop bit. Commands are transmitted as text lines with space-separated fields and terminated by the newline character [code]\n[/code].[br][br]
+        The transmitter can be enabled or disabled in software, and its configured state is restored after a restart independently of the server state.
+        The transmitter can be controlled either through [url=/base]MuraenaBase[/url] using its WebUI and API, or through the specially [url=/sources/MuraenaCOM/muraenacom]developed[/url] [img=muraenacom.jpg]MuraenaCOM[/img] utility.
+        The transmitter output power is also software-adjustable over the range [code]P=0...100[/code], corresponding to approximately 73...113 dBµV at the unit output with a 75-ohm load connected.
+        [br][br]
+        The circuit is assembled on a printed circuit board installed in an aluminium enclosure measuring 80x54x23 mm. The [url=/sources/MuraenaTX/MuraenaTX.lay6]printed circuit board[/url] can be manufactured relatively easily by [img=muraenatx_pcb.jpg]etching[/img], milling, or by assembling the circuit on a prototyping board.
+        ',
     ],
 
     'tx.operation_title' => [
