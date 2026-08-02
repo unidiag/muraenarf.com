@@ -28,11 +28,11 @@ return [
                     <small><?= t('contact.email_title') ?></small>
                     <strong><?= t('contact.email') ?></strong>
                 </a>
-                <a class="contact-card surface-card reveal" href="https://github.com/unidiag" target="_blank" rel="noopener noreferrer">
+                <article class="contact-card surface-card reveal">
                     <span class="material-symbols-rounded">code</span>
                     <small><?= t('contact.github_title') ?></small>
                     <strong><?= t('contact.github_text') ?></strong>
-                </a>
+                </article>
             </div>
         </section>
         <?php

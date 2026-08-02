@@ -463,8 +463,8 @@ chmod +x ./make && \
     ],
 
     'contact.author_name' => [
-        'Виталий Тумашевский',
-        'Vitali Tumasheuski',
+        'Виталий Тумашевский[br]Телеграм: [url=https://t.me/unidiag]@unidiag[/url]',
+        'Vitali Tumasheuski[br]Telegram: [url=https://t.me/unidiag]@unidiag[/url]',
     ],
 
     'contact.email_title' => [
@@ -480,8 +480,8 @@ chmod +x ./make && \
     ],
 
     'contact.github_text' => [
-        'Репозитории проекта публикуются на GitHub.',
-        'Project repositories are published on GitHub.',
+        '[url=/sources/]/sources/[/url] и на [url=https://github.com/unidiag]GitHub[/url] автора.',
+        '[url=/sources/]/sources/[/url] and on the author\'s [url=https://github.com/unidiag]GitHub[/url].',
     ],
 
     'common.diy_level' => [

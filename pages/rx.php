@@ -18,7 +18,21 @@ return [
                     <h1><?= t('rx.title') ?></h1>
                     <p><?= t('rx.subtitle') ?></p>
                 </div>
-                <div class="device-icon reveal"><span class="material-symbols-rounded">account_tree</span></div>
+                <div class="hero__visual">
+                    <div class="hero__diy-level">
+                        <?= diyLevel(8) ?>
+                    </div>
+                    <div class="device-photo reveal">
+                        <img
+                            src="/assets/images/muraenarx_main.jpg"
+                            alt="<?= t('tx.photo_alt') ?>"
+                            width="720"
+                            height="520"
+                            loading="eager"
+                            decoding="async"
+                            >
+                    </div>
+                </div>
             </div>
         </section>
         <section class="section">
