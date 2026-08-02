@@ -1,5 +1,7 @@
 <?php
 
+
+
 return [
     'slug' => 'rx',
     'menu' => 'rx.menu',
@@ -30,3 +32,6 @@ return [
         <?php
     },
 ];
+
+
+

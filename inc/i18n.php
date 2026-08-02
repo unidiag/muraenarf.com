@@ -144,8 +144,8 @@ return [
     ],
 
     'main.feature_1' => [
-        'Передача управления по существующему коаксиальному тракту на частоте 320 MHz. Канал СК-22 должен быть свободен в вашей сети. [img=tx-spectrum.jpg]Модуляция GFSK с девиацией не более 30 кГц[/img]. Скорость передачи около 57.6 кбод.',
-        'Control signal transmission via the existing coaxial path at a frequency of 320 MHz. The SK-22 channel must be available in your network. [img=tx-spectrum.jpg]GFSK modulation with a deviation of no more than 30 kHz[/img]. Transmission rate: approximately 57.6 kbaud.',
+        'Передача управления по существующему коаксиальному тракту',
+        'Control signal transmission via the existing coaxial path',
     ],
 
     'main.feature_2' => [
@@ -154,8 +154,8 @@ return [
     ],
 
     'main.feature_3' => [
-        'Независимое управление группами выходов через битовую маску',
-        'Independent output groups controlled by a bit mask',
+        'Низкое энергопотребление и режим сна',
+        'Low power consumption and sleep mode',
     ],
 
     'main.feature_4' => [
@@ -175,33 +175,21 @@ return [
         'Generates addressable control commands and injects them into the coaxial network.',
     ],
 
-    'tx.purpose_title' => [
-        'Назначение',
-        'Purpose',
-    ],
+    'tx.purpose_title' => [ 'Назначение', 'Purpose'],
 
     'tx.purpose_text' => [
         'MuraenaTX является центральным узлом системы.
-        В общем смысле - это передатчик, формирующий адресные команды для исполнительных приёмников [url=/rx]MuraenaRX[/url] на частоте 320 MHz (SK-22).
-        Модуляция GFSK с девиацией не более 30 кГц. Скорость передачи около 57.6 кбод. [img=tx-spectrum.jpg]Спектр сигнала[/img] показал достойные результаты в SDR-приёмнике и на вещаемые телеканалы сигнал передатчика никак не влияет.[br][br]
-        Аппаратное ограничение в [url=/sources/CC1101.PDF]CC1101[/url] позволяет передавать не более 64 байт полезной нагрузки в одном RF-пакете. Поэтому MuraenaTX формирует один пакет с состояниями до 15 устройств:[br][code]TYPE + COUNT + (ADDR_H + ADDR_L + CMD + MASK) х 15 = 62 байта[/code].[br]
-        Если приёмников в сети больше, то информация передаётся последовательными пакетами с учётом приоритета последних изменённых состояний.
-        При максимальном количестве приёмников до 16384 (адреса [code]0000-3FFF[/code]) период полного цикла может составить несколько минут.
-        Разумеется, если вы используете вменяемое количество исполнительных блоков (100-200 шт), то их обновление происходит значительно быстрее в течение нескольких секунд.',
+        В общем смысле это передатчик, формирующий адресные команды для исполнительных приёмников [url=/rx]MuraenaRX[/url] на частоте около 320 MHz (SK-22).
+        Используется модуляция GFSK с девиацией до 30 кГц и скоростью передачи 57.6 кбод. SDR-приёмник показал приемлемый [img=tx-spectrum.jpg]спектр сигнала[/img], который не оказывает влияния на телевизионные каналы, вещающие на других частотах.
+        Реальная несущая частота передатчика может отличаться от установленной на несколько десятков килогерц. Для работы системы это не критично, поскольку приёмник команд [url=/rx]MuraenaRX[/url] имеет достаточно широкую полосу приёма — 270 кГц.',
 
         'MuraenaTX is the central node of the system.
-        In general terms, it is a transmitter that generates addressable commands for [url=/rx]MuraenaRX[/url] receiver modules at a frequency of 320 MHz (SK-22).
-        It uses GFSK modulation with a deviation of no more than 30 kHz. The data rate is approximately 57.6 kbaud. The [img=tx-spectrum.jpg]signal spectrum[/img] showed good results when observed with an SDR receiver, and the transmitter signal does not interfere with broadcast television channels.[br][br]
-        The hardware limitation of the [url=/sources/CC1101.PDF]CC1101[/url] allows no more than 64 bytes of payload to be transmitted in a single RF packet. Therefore, MuraenaTX creates one packet containing the states of up to 15 devices:[br][code]TYPE + COUNT + (ADDR_H + ADDR_L + CMD + MASK) x 15 = 62 bytes[/code].[br]
-        If the network contains more receivers, their information is transmitted in consecutive packets, with priority given to the most recently changed states.
-        With the maximum supported number of 16,384 receivers using addresses [code]0000-3FFF[/code], a complete update cycle may take several minutes.
-        Naturally, when a reasonable number of output modules is used, such as 100-200 units, their states are updated much faster, within several seconds.',
+        In general terms, it is a transmitter that generates addressable commands for [url=/rx]MuraenaRX[/url] receiver modules at a frequency of approximately 320 MHz (SK-22).
+        It uses GFSK modulation with a deviation of up to 30 kHz and a data rate of 57.6 kbaud. An SDR receiver showed an acceptable [img=tx-spectrum.jpg]signal spectrum[/img], which does not noticeably affect television channels broadcasting on other frequencies.
+        The actual carrier frequency of the transmitter may differ from the configured value by several tens of kilohertz. This is not critical for system operation because the [url=/rx]MuraenaRX[/url] command receiver has a sufficiently wide receive bandwidth of 270 kHz.',
     ],
 
-    'tx.device_title' => [
-        'Устройство',
-        'Hardware',
-    ],
+    'tx.device_title' => [ 'Устройство', 'Hardware' ],
 
     'tx.device_text' => [
         'Основой блока служит [img=muraenatx_scheme.jpg]микроконтроллер ESP32-C3 и ВЧ-трансивер CC1101[/img].
@@ -219,8 +207,9 @@ esptool --chip esp32c3 --port /dev/ttyACM0 --baud 921600 write-flash 0x0 Muraena
         Управляется микроконтроллер ESP32-C3 посредством виртуального COM-порта, создаваемого при подключении к серверу [code]/dev/ttyACM0[/code].
         Параметры порта: 115200 бод, 8 бит данных, без контроля чётности, 1 стоп-бит. Команды передаются в виде текстовых строк с разделением полей пробелами и окончанием строки символом её перевода [code]\n[/code].[br][br]
         Передатчик может быть включён или отключён программно, а установленное состояние восстанавливается после перезапуска независимо от состояния сервера.
-        Управление передатчиком может быть выполнено как через [url=/base]MuraenaBase[/url] (WebUI, API), так и через специально [url=/sources/MuraenaCOM/muraenacom]написанную[/url] утилиту [img=muraenacom.jpg]MuraenaCOM[/img].
+        Управление осуществляется как через [url=/base]MuraenaBase[/url] (WebUI, API), так и через специально [url=/sources/MuraenaCOM/muraenacom]написанную[/url] утилиту [img=muraenacom.jpg]MuraenaCOM[/img].
         Мощность передатчика регулируется программно [code]P=0...100[/code], что соответствует 73...113 dBµV на выходе блока при подключенной нагрузке 75 Ом.
+        Для практической работы и измерений на сети удобно использовать [img=muraenatester.jpg]простой тестер сигнала[/img] с индикаторами уровня и статуса приёма команд ([img=muraenatester_schematic.jpg]схема[/img], [url=/sources/MuraenaTester/]исходные файлы прошивки[/url]).
         ',
 
         'The unit is based on an [img=muraenatx_scheme.jpg]ESP32-C3 microcontroller and a CC1101 RF transceiver[/img].
@@ -243,22 +232,64 @@ esptool --chip esp32c3 --port /dev/ttyACM0 --baud 921600 write-flash 0x0 Muraena
         ',
     ],
 
-    'tx.operation_title' => [
-        'Принцип действия',
-        'How it works',
-    ],
-
-    'tx.operation_text' => [
-        'Каждый пакет содержит адрес исполнительного блока, код команды и восьмибитную маску. Передатчик может быть программно включён или отключён, а установленное состояние восстанавливается после перезапуска.',
-        'Each packet contains an output module address, a command code and an eight-bit mask. The transmitter can be enabled or disabled in software and restores the saved state after restart.',
-    ],
 
     'tx.protocol_title' => [
         'Формат команды',
         'Command format',
     ],
 
-    'tx.protocol_example' => 'addr=0001 cmd=01 mask=11110000',
+    'tx.protocol_example' => [
+        'Аппаратное ограничение [url=/sources/CC1101.PDF]CC1101[/url] позволяет передавать не более 64 байт полезной нагрузки в одном RF-пакете. Поэтому MuraenaTX формирует один пакет, содержащий состояния до 15 устройств:[br][code]TYPE + COUNT + (ADDR_H + ADDR_L + CMD + MASK) × 15 = 62 байта[/code].[br]
+        Если приёмников в сети больше, информация передаётся последовательными пакетами с учётом приоритета последних изменённых состояний.
+        При максимальном количестве приёмников — 16 384 устройства с адресами [code]0000-3FFF[/code] — период полного цикла может составлять несколько минут.
+        Если используется разумное количество исполнительных блоков, например 100-200 устройств, их состояния обновляются значительно быстрее — в течение нескольких секунд.[br][br]
+        Основные команды взаимодействия по COM-порту с MuraenaTX:
+[code]LIST                              - показать список адресов и их состояний
+ADDR=0001                         - показать состояние адреса 0001
+ADDR=0001 MASK=01010101           - установить маску 01010101 для адреса 0001
+ADDR=0001 CMD=00 MASK=01010101    - установить маску 01010101 и команду 00 для адреса 0001
+ADDR=0001 CMD=01010101 MASK=4A    - установить маску 4A и команду 01010101 для адреса 0001
+SLEEP                             - показать состояние режима сна
+SLEEP=ON                          - включить режим сна для всех адресов
+SLEEP=OFF                         - отключить режим сна для всех адресов
+ADDR=0000 NEWADDR=0001            - изменить адрес 0000 на 0001
+DELETE=0001                       - удалить адрес 0001
+DELETE=ALL                        - удалить все адреса
+RESET                             - перезапустить систему
+ON / OFF                          - включить или выключить передатчик
+TX?                               - запросить состояние передатчика
+P=0..100                          - установить мощность передатчика в процентах
+HELP                              - показать справку[/code]
+        Служебный параметр CMD является необязательным и по умолчанию равен [code]0x00[/code]. Он может использоваться для передачи дополнительной информации исполнительным блокам, например для включения режима «предупреждение абонента», при котором выход отключается на 3 секунды каждую минуту.[br][br]
+        Использование низкоуровневого протокола по COM-порту имеет смысл, только когда требуется интеграция с другими системами, например с SCADA. Для обычной работы достаточно использовать WebUI [url=/base]MuraenaBase[/url].',
+
+        'The hardware limitation of the [url=/sources/CC1101.PDF]CC1101[/url] allows no more than 64 bytes of payload to be transmitted in a single RF packet. Therefore, MuraenaTX creates one packet containing the states of up to 15 devices:[br][code]TYPE + COUNT + (ADDR_H + ADDR_L + CMD + MASK) × 15 = 62 bytes[/code].[br]
+        If the network contains more receivers, the information is transmitted in consecutive packets, with priority given to the most recently changed states.
+        With the maximum supported number of 16,384 receivers using addresses [code]0000-3FFF[/code], a complete update cycle may take several minutes.
+        When a reasonable number of output modules is used, such as 100-200 devices, their states are updated much faster, within several seconds.[br][br]
+        Main commands for interacting with MuraenaTX via the COM port:
+[code]LIST                              - show the list of addresses and their states
+ADDR=0001                         - show the state of address 0001
+ADDR=0001 MASK=01010101           - set mask 01010101 for address 0001
+ADDR=0001 CMD=00 MASK=01010101    - set mask 01010101 and command 00 for address 0001
+ADDR=0001 CMD=01010101 MASK=4A    - set mask 4A and command 01010101 for address 0001
+SLEEP                             - show the sleep mode status
+SLEEP=ON                          - enable sleep mode for all addresses
+SLEEP=OFF                         - disable sleep mode for all addresses
+ADDR=0000 NEWADDR=0001            - change address 0000 to 0001
+DELETE=0001                       - delete address 0001
+DELETE=ALL                        - delete all addresses
+RESET                             - restart the system
+ON / OFF                          - enable or disable the transmitter
+TX?                               - request the transmitter status
+P=0..100                          - set the transmitter power as a percentage
+HELP                              - show help[/code]
+        The CMD service parameter is optional and defaults to [code]0x00[/code]. It can be used to transmit additional information to output modules, for example to enable a subscriber warning mode that disables the output for 3 seconds once every minute.[br][br]
+        Using the low-level protocol by COM-port is only necessary when integration with other systems, such as SCADA, is required. For regular operation, it is sufficient to use the [url=/base]MuraenaBase[/url] WebUI.',
+    ],
+
+
+    
 
     'rx.menu' => 'MuraenaRX',
 
@@ -319,6 +350,11 @@ esptool --chip esp32c3 --port /dev/ttyACM0 --baud 921600 write-flash 0x0 Muraena
         'MuraenaBase — control panel',
     ],
 
+    'base.photo_alt' => [
+        'Программа MuraenaBase',
+        'MuraenaBase program',
+    ],
+
     'base.subtitle' => [
         'WebUI для настройки и контроля системы MuraenaRF.',
         'A WebUI for configuring and monitoring MuraenaRF.',
@@ -330,8 +366,8 @@ esptool --chip esp32c3 --port /dev/ttyACM0 --baud 921600 write-flash 0x0 Muraena
     ],
 
     'base.purpose_text' => [
-        'MuraenaBase предоставляет единый интерфейс для управления передатчиком и таблицей исполнительных адресов.',
-        'MuraenaBase provides a single interface for controlling the transmitter and the table of output module addresses.',
+        'MuraenaBase предоставляет единый интерфейс для управления передатчиком [url=/tx]MuraenaTX[/url] и таблицей адресов исполнительных приёмников [url=/rx]MuraenaRX[/url]. Ознакомиться с интерфейсом можно в [url=https://demo.muraenarf.com]демо-версии[/url].',
+        'MuraenaBase provides a single interface for controlling the transmitter [url=/tx]MuraenaTX[/url] and the table of output module addresses [url=/rx]MuraenaRX[/url]. You can familiarize yourself with the interface in the [url=https://demo.muraenarf.com]demo version[/url].',
     ],
 
     'base.functions_title' => [
@@ -355,8 +391,8 @@ esptool --chip esp32c3 --port /dev/ttyACM0 --baud 921600 write-flash 0x0 Muraena
     ],
 
     'base.function_4' => [
-        'Отображение объектов на карте',
-        'Display installation objects on a map',
+        'Отображение исполнительных приёмников на карте',
+        'Display output modules on a map',
     ],
     'base.function_5' => [
         'API для интеграции с другими системами',
@@ -364,14 +400,47 @@ esptool --chip esp32c3 --port /dev/ttyACM0 --baud 921600 write-flash 0x0 Muraena
     ],
 
     'base.technology_title' => [
-        'Технологии',
-        'Technology',
+        'Установка и запуск',
+        'Installation',
     ],
 
-    'base.technology_text' => [
-        'Панель разрабатывалась как отдельное WebUI-приложение и взаимодействует с оборудованием через серверную часть проекта.',
-        'The panel is developed as a standalone WebUI application and communicates with the project hardware through its backend.',
-    ],
+'base.technology_text' => [
+    'Вы можете самостоятельно скомпилировать исполняемый файл [url=/sources/MuraenaBase/muraenabase]muraenabase[/url] из исходного кода, используя [url=/sources/MuraenaBase/]файлы проекта[/url].
+    Перед компиляцией необходимо установить Go (v1.26), Node.js (v24.15) и сервер баз данных MySQL.[br]
+    Скачайте директорию проекта и запустите скрипт сборки в терминале Linux:
+    [code]mkdir -p ./MuraenaBase && cd ./MuraenaBase && \
+wget --mirror \
+  --no-parent \
+  --no-host-directories \
+  --cut-dirs=2 \
+  --reject "index.html*" \
+  --exclude-directories="/sources/MuraenaBase/frontend/node_modules" \
+  https://muraenarf.com/sources/MuraenaBase/ && \
+chmod +x ./make && \
+./make
+./muraenabase[/code]
+
+    При первом запуске программы мастер настройки предложит выбрать порт, на котором будет работать веб-интерфейс, подтвердить создание юнита systemd для постоянной работы приложения в фоновом режиме, а также попытается создать базу данных `mbase` с пользователем `mbase` и паролем `mbase`.
+    После успешного запуска веб-интерфейса вы сможете войти в систему с учётной записью суперпользователя — логин `root`, пароль `root`. После входа можно создать пользователей системы и изменить пароль суперпользователя на более безопасный.',
+
+    'You can compile the [url=/sources/MuraenaBase/muraenabase]muraenabase[/url] executable from the source code using the [url=/sources/MuraenaBase/]project files[/url].
+    Before compiling, install Go (v1.26), Node.js (v24.15), and a MySQL database server.[br]
+    Download the project directory and run the build script in a Linux terminal:
+    [code]mkdir -p ./MuraenaBase && cd ./MuraenaBase && \
+wget --mirror \
+  --no-parent \
+  --no-host-directories \
+  --cut-dirs=2 \
+  --reject "index.html*" \
+  --exclude-directories="/sources/MuraenaBase/frontend/node_modules" \
+  https://muraenarf.com/sources/MuraenaBase/ && \
+chmod +x ./make && \
+./make
+./muraenabase[/code]
+
+    On the first launch, the setup wizard will ask you to choose the port on which the web interface will run, confirm the creation of a systemd unit so that the application can run continuously in the background, and attempt to create the `mbase` database with the username `mbase` and password `mbase`.
+    After the web interface starts successfully, you can sign in using the superuser account with the username `root` and password `root`. Once signed in, you can create system users and change the superuser password to a more secure one.',
+],
 
     'contact.menu' => [
         'Контакты',

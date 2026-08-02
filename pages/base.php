@@ -16,7 +16,15 @@ return [
                     <h1><?= t('base.title') ?></h1>
                     <p><?= t('base.subtitle') ?></p>
                 </div>
-                <div class="device-icon reveal"><span class="material-symbols-rounded">dashboard</span></div>
+                <div class="device-photo-3d reveal">
+                    <div class="device-photo-3d__shadow"></div>
+                    <img
+                        src="/assets/images/muraenabase_main.jpg"
+                        alt="<?= t('base.photo_alt') ?>"
+                        width="900"
+                        height="700"
+                    >
+                </div>
             </div>
         </section>
         <section class="section">

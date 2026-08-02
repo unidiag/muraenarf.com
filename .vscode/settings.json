@@ -1,0 +1,13 @@
+{
+    "[php]": {
+        "editor.defaultFormatter": "aequabit.php-cs-fixer",
+        "editor.formatOnSave": true,
+        "editor.insertSpaces": true,
+        "editor.tabSize": 4
+    },
+
+    "php.validate.enable": true,
+    "php.validate.run": "onType",
+
+    "editor.detectIndentation": false
+}

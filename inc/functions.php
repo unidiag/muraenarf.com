@@ -434,6 +434,7 @@ function renderPlainTranslatedText(
     $patterns = [
         '\[code\].*?\[/code\]',
         '\[br\]',
+        '`[^`\r\n]+`',
     ];
 
     if ($allowLinks) {
@@ -469,6 +470,26 @@ function renderPlainTranslatedText(
             $result .= '<br>';
             continue;
         }
+
+
+        if (
+            strlen($part) >= 2
+            && str_starts_with($part, '`')
+            && str_ends_with($part, '`')
+        ) {
+            $highlightedText = substr($part, 1, -1);
+
+            $result .= '<strong class="text-highlight">'
+                . htmlspecialchars(
+                    $highlightedText,
+                    ENT_QUOTES | ENT_SUBSTITUTE,
+                    'UTF-8'
+                )
+                . '</strong>';
+
+            continue;
+        }
+
 
         if (
             preg_match(

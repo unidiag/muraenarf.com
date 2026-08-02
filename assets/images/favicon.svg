@@ -1,25 +1,41 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title desc">
-  <title id="title">MuraenaRF</title>
-  <desc id="desc">RF splitter with eight ports and a central input arrow</desc>
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 128 128"
+  role="img"
+  aria-label="MuraenaRF"
+>
+  <defs>
+    <mask id="shape">
+      <rect width="128" height="128" fill="black"/>
 
-  <g fill="none" stroke="#65e0d1" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
-    <!-- Main body -->
-    <rect x="18" y="43" width="92" height="42" rx="5"/>
+      <!-- Основной силуэт -->
+      <rect x="16" y="40" width="96" height="48" rx="9" fill="white"/>
 
-    <!-- Top ports -->
-    <path d="M24 43V31h9v12"/>
-    <path d="M39 43V31h9v12"/>
-    <path d="M80 43V31h9v12"/>
-    <path d="M95 43V31h9v12"/>
+      <!-- Верхние разъёмы -->
+      <rect x="22" y="27" width="12" height="20" rx="3" fill="white"/>
+      <rect x="39" y="27" width="12" height="20" rx="3" fill="white"/>
+      <rect x="77" y="27" width="12" height="20" rx="3" fill="white"/>
+      <rect x="94" y="27" width="12" height="20" rx="3" fill="white"/>
 
-    <!-- Bottom ports -->
-    <path d="M24 85v12h9V85"/>
-    <path d="M39 85v12h9V85"/>
-    <path d="M80 85v12h9V85"/>
-    <path d="M95 85v12h9V85"/>
-  </g>
+      <!-- Нижние разъёмы -->
+      <rect x="22" y="81" width="12" height="20" rx="3" fill="white"/>
+      <rect x="39" y="81" width="12" height="20" rx="3" fill="white"/>
+      <rect x="77" y="81" width="12" height="20" rx="3" fill="white"/>
+      <rect x="94" y="81" width="12" height="20" rx="3" fill="white"/>
 
-  <!-- Input arrow -->
-  <path d="M64 27v13" fill="none" stroke="#65e0d1" stroke-width="6" stroke-linecap="round"/>
-  <path d="M55 39h18L64 52z" fill="#65e0d1" stroke="#65e0d1" stroke-width="3" stroke-linejoin="round"/>
+      <!-- Внутренняя область корпуса -->
+      <rect x="25" y="52" width="78" height="24" rx="4" fill="black"/>
+
+      <!-- Крупная входная стрелка -->
+      <rect x="59" y="22" width="10" height="29" rx="3" fill="black"/>
+      <path d="M50 43h28L64 59z" fill="black"/>
+    </mask>
+  </defs>
+
+  <rect
+    width="128"
+    height="128"
+    fill="#65e0d1"
+    mask="url(#shape)"
+  />
 </svg>
